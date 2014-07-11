@@ -12,7 +12,7 @@ describe Category do
     drama = Category.create(name: 'Drama')
     godfather = Video.create(title: 'God Father', category: drama)
     anniehall = Video.create(title: 'Annie Hall', category: drama)
-    expect(drama.videos).to include(godfather, anniehall)
+    expect(drama.videos).to eq([anniehall, godfather])
   end
 
 end
