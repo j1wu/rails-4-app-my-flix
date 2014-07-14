@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710235250) do
+ActiveRecord::Schema.define(version: 20140713131126) do
 
   create_table "categories", force: true do |t|
     t.string "name"
+  end
+
+  create_table "users", force: true do |t|
+    t.string "email"
+    t.string "password_digest"
+    t.string "full_name"
   end
 
   create_table "videos", force: true do |t|
