@@ -39,7 +39,7 @@ describe SessionsController do
 
     context 'with invalid credentials' do
       before do
-        post :create, user: { email: john.email, password: '' }
+        post :create, email: john.email, password: ''
       end
       it 'does not set session' do
         expect(session[:user_id]).to eq(nil)
