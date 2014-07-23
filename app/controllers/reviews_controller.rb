@@ -10,8 +10,7 @@ class ReviewsController < ApplicationController
       # it 'sets @video'
       # to ensure @video is still there after rendering, and also to eliminate the phatom review record issue
       @video = video.reload
-      # BUG: flash message still there after navigate to another page
-      flash[:danger] = 'Rating or content cannot be blank'
+      flash.now[:danger] = 'Rating or content cannot be blank'
       # TODO: not lose review content when rating not present when submitting
       render 'videos/show'
     end

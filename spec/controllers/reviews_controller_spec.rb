@@ -4,8 +4,8 @@ describe ReviewsController do
 
   describe 'POST create' do
 
-    let!(:seven) { seven = Fabricate(:video) }
-    let!(:bob) { bob = Fabricate(:user) }
+    let(:seven) { Fabricate(:video) }
+    let(:bob) { Fabricate(:user) }
 
     context 'with authenticated user' do
       context 'with valid input' do

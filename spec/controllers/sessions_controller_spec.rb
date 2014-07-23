@@ -20,7 +20,7 @@ describe SessionsController do
   end
 
   describe 'POST create' do
-    let!(:john) { john = Fabricate(:user) }
+    let(:john) { Fabricate(:user) }
     context 'with valid credentials' do
       before do
         # this is not a model-backed form
@@ -54,7 +54,7 @@ describe SessionsController do
   end
 
   describe 'DELETE destroy' do
-    let!(:bob) { bob = Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
     before do
       session[:user_id] = bob.id
       get :destroy

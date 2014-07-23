@@ -56,12 +56,11 @@ end
 
 describe 'average rating' do
 
-  let!(:fight_club) { fight_club = Fabricate(:video) }
+  let(:fight_club) { Fabricate(:video) }
 
   context 'has no rating' do
     it 'sets average rating to not-yet-rated' do 
-      rating = fight_club.average_rating
-      expect(rating).to eq('Not Yet Rated')
+      expect(fight_club.average_rating).to eq('Not Yet Rated')
     end
   end
 

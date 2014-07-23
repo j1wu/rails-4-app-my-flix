@@ -3,7 +3,7 @@ require 'spec_helper'
 describe VideosController do
 
   describe 'GET show' do
-    let!(:fight_club) { Fabricate(:video) }
+    let(:fight_club) { Fabricate(:video) }
 
     context 'authenticated' do
       before do
@@ -50,7 +50,7 @@ describe VideosController do
   end
 
   describe 'POST search' do
-    let!(:south_park) { Fabricate(:video, title: 'South Park') }
+    let(:south_park) { Fabricate(:video, title: 'South Park') }
 
     context 'authenticated' do
       before do
