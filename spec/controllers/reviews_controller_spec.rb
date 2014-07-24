@@ -34,6 +34,10 @@ describe ReviewsController do
           post :create, review: {rating: '', content: ''}, video_id: seven.id
           expect(assigns(:video)).to eq(seven)
         end
+        it 'sets @review' do
+          post :create, review: {rating: '', content: ''}, video_id: seven.id
+          expect(assigns(:review)).to be_an_instance_of(Review)
+        end
         it 'does not create review if no rating' do
           post :create, review: {rating: '', content: 'something'}, video_id: seven.id
           expect(Review.count).to eq(0)
@@ -49,6 +53,10 @@ describe ReviewsController do
         it 'sets error message' do
           post :create, review: {rating: '', content: ''}, video_id: seven.id
           expect(flash[:danger]).to eq('Rating or content cannot be blank')
+        end
+        it 'persists review content if no rating' do
+          post :create, review: {rating: '', content: 'keep this!'}, video_id: seven.id
+          expect(response.body).to include('keep this!')
         end
       end
     end

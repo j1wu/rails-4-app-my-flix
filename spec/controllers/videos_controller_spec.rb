@@ -15,6 +15,11 @@ describe VideosController do
         expect(assigns(:video)).to eq(fight_club)
       end
 
+      it 'sets @review variable' do
+        get :show, id: fight_club.id
+        expect(assigns(:review)).to be_an_instance_of(Review)
+      end
+
       it 'sets @reviews variable' do
         get :show, id: fight_club.id
         review1 = Fabricate(:review, video: fight_club)

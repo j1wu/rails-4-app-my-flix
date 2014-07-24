@@ -9,6 +9,7 @@ end
 def show
   @video = Video.find(params[:id])
   @reviews = @video.reviews
+  @review = Review.new
 end
 
 def search
