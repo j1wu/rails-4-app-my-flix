@@ -56,7 +56,7 @@ describe ReviewsController do
         end
         it 'persists review content if no rating' do
           post :create, review: {rating: '', content: 'keep this!'}, video_id: seven.id
-          expect(response.body).to include('keep this!')
+          expect(assigns(:review).content).to eq('keep this!')
         end
       end
     end
