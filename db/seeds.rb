@@ -6,6 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+john = User.create(email: 'john@example.com', password: '123', full_name: 'John Smith')
+
 drama = Category.create(name: 'Drama')
 scifi = Category.create(name: 'Sci-Fi')
 
@@ -22,6 +24,9 @@ Video.create(title: 'Misery', description: 'N/A', small_cover_url: '/tmp/misery.
 Video.create(title: 'Moon', description: 'N/A', small_cover_url: '/tmp/moon.jpg', large_cover_url: '/tmp/sample.jpg', category: scifi)
 Video.create(title: 'No', description: 'N/A', small_cover_url: '/tmp/no.jpg', large_cover_url: '/tmp/sample.jpg', category: drama)
 Video.create(title: 'Outrage', description: 'N/A', small_cover_url: '/tmp/outrage.jpg', large_cover_url: '/tmp/sample.jpg', category: drama)
-Video.create(title: 'Seven', description: 'N/A', small_cover_url: '/tmp/seven.jpg', large_cover_url: '/tmp/sample.jpg', category: drama)
+seven = Video.create(title: 'Seven', description: 'N/A', small_cover_url: '/tmp/seven.jpg', large_cover_url: '/tmp/sample.jpg', category: drama)
 Video.create(title: 'Star Trek', description: 'N/A', small_cover_url: '/tmp/star_trek.jpg', large_cover_url: '/tmp/sample.jpg', category: scifi)
 Video.create(title: 'Trainspotting', description: 'N/A', small_cover_url: '/tmp/trainspotting.jpg', large_cover_url: '/tmp/sample.jpg', category: drama, created_at: 3.days.ago)
+
+review1 = Review.create(content: 'mind blowing!', rating: 5, video: seven, user: john)
+review2 = Review.create(content: 'the best performce of pitt', rating: 4, video: seven, user: john)

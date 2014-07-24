@@ -52,3 +52,25 @@ describe Video do
   end
   
 end
+
+
+describe 'average rating' do
+
+  let(:fight_club) { Fabricate(:video) }
+
+  context 'has no rating' do
+    it 'sets average rating to not-yet-rated' do 
+      expect(fight_club.average_rating).to eq('Not Yet Rated')
+    end
+  end
+
+  context 'has rating' do
+    it 'sets average rating as rounded float' do
+      review1 = Fabricate(:review, video: fight_club, rating: 2)
+      review2 = Fabricate(:review, video: fight_club, rating: 3)
+      rating = fight_club.average_rating
+      expect(rating).to eq(2.5)
+    end
+  end
+
+end
