@@ -13,11 +13,23 @@ class QueueItemsController < ApplicationController
       flash[:info] = 'Video already exsited in queue'
     end
     redirect_to my_queue_path
+  end
 
+  def destroy
+    queue_item = QueueItem.find_by(id: params['id'])
+    queue_item.delete
+    reorder_queue_items
+    redirect_to my_queue_path
   end
 
   def queue_item_exsited?(video)
-    QueueItem.all.map(&:video).include?(video)
+    current_user.queue_items.map(&:video).include?(video)
+  end
+
+  def reorder_queue_items
+    current_user.queue_items.each_with_index do |queue_item, index|
+      queue_item.update_attributes(position: index+1)
+    end
   end
 
 end

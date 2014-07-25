@@ -62,4 +62,43 @@ describe QueueItemsController do
     end
   end
 
+  describe 'DELETE destory' do
+    let(:video) { Fabricate(:video) }
+    let(:user) { Fabricate(:user) }
+    context 'with authenticated user' do
+      before do
+        session[:user_id] = user.id
+      end
+      it 'redirects user back to my queue page' do
+        queue_item = Fabricate(:queue_item, user: user, video: video)
+        delete :destroy, id: queue_item.id
+        expect(response).to redirect_to(my_queue_path)
+      end
+      it 'deletes queue item' do
+        queue_item = Fabricate(:queue_item, user: user, video: video)
+        delete :destroy, id: queue_item.id
+        expect(QueueItem.count).to eq(0) 
+      end
+      it 'resets remaining queue items positon number' do
+        queue_item1 = Fabricate(:queue_item, user: user, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, position: 2)
+        queue_item3 = Fabricate(:queue_item, user: user, position: 3)
+        delete :destroy, id: queue_item2.id
+        expect(queue_item3.reload.position).to eq(2)
+      end
+    end
+    context 'with unauthenticated user' do
+      it 'does not delete queue item' do
+        queue_item = Fabricate(:queue_item, user: user, video: video)
+        delete :destroy, id: queue_item.id
+        expect(QueueItem.count).to eq(1) 
+      end
+      it 'redirects user to sign in path' do
+        queue_item = Fabricate(:queue_item, user: user, video: video)
+        delete :destroy, id: queue_item.id
+        expect(response).to redirect_to sign_in_path
+      end
+    end
+  end
+
 end
