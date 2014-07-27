@@ -7,4 +7,9 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :password, :full_name
   validates :email, uniqueness: true
 
+  def normailize_queue_item_positions
+    self.queue_items.each_with_index do |queue_item, index|
+      queue_item.update_attributes(position: index+1)
+    end
+  end
 end
