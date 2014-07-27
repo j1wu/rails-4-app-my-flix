@@ -101,4 +101,42 @@ describe QueueItemsController do
     end
   end
 
+  describe 'POST update' do
+    let(:user) { Fabricate(:user) }
+    context 'with valid input' do
+      before do
+        session[:user_id] = user.id
+      end
+      it 'redirects user to my queue page' do
+        post :update
+        expect(response).to redirect_to my_queue_path
+      end
+
+      end
+      it 'updates queue items positions' do
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        queue_item1 = Fabricate(:queue_item, video: video1, user: user, position: 1)
+        queue_item2 = Fabricate(:queue_item, video: video2, user: user, position: 2)
+        # this is the params[:queue_items] format I'm getting
+        # "queue_items"=>{"id"=>["1", "2"], "position"=>["2", "1"]}
+        # that's why I'm passing the same format of params here, but the test wont pass
+        # and I just not able to capture what params exactly this test pass to the controller
+        # I tried binding.pry in the controller code, but the interactive
+        # mode, both queue_items and params came back empty...I dont know why
+        post :update, queue_items: {id: [queue_item1.id, queue_item2.id], position: [queue_item2.position, queue_item1.position]}
+        expect(queue_item1.reload.position).to eq(2)
+        expect(queue_item2.reload.position).to eq(1)
+      end
+      it 're-orders queue items base on the new positions' do
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        queue_item1 = Fabricate(:queue_item, video: video1, user: user, position: 1)
+        queue_item2 = Fabricate(:queue_item, video: video2, user: user, position: 2)
+        # this wont pass neither, but it kinda works in the browswer
+        post :update, queue_items: {id: [queue_item1.id, queue_item2.id], position: [queue_item2.position, queue_item1.position]}
+        expect(user.queue_items.first).to eq(queue_item2)
+      end
+  end
+
 end

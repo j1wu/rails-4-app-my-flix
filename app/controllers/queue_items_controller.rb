@@ -22,6 +22,16 @@ class QueueItemsController < ApplicationController
     redirect_to my_queue_path
   end
 
+  def update
+    queue_items = current_user.queue_items
+    # binding.pry
+    queue_items.each_with_index do |queue_item, index|
+      queue_item.position = params[:queue_items]['position'][index]
+      queue_item.save
+    end
+    redirect_to my_queue_path
+  end
+
   def queue_item_exsited?(video)
     current_user.queue_items.map(&:video).include?(video)
   end

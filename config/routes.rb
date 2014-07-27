@@ -19,6 +19,7 @@ Myflix::Application.routes.draw do
 
   get 'my_queue', to: 'queue_items#index'
   post 'add_queue/:id', to: 'queue_items#create', as: 'add_queue'
+  post 'update_queue', to: 'queue_items#update'
 
   get 'ui(/:action)', controller: 'ui'
 end
