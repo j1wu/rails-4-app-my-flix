@@ -22,20 +22,22 @@ class QueueItemsController < ApplicationController
     redirect_to my_queue_path
   end
 
-  def update
+  def update_queue
     begin
+      # update_queue
       ActiveRecord::Base.transaction do
-        queue_items = current_user.queue_items
-        queue_items.each_with_index do |queue_item, index|
-          queue_item.position = params[:queue_items]['position'][index]
-          queue_item.save!
+        params[:queue_items].each do |queue_item_data|
+          queue_item = QueueItem.find(queue_item_data['id'])
+          queue_item.update_attributes!(position: queue_item_data['position']) if queue_item.user == current_user
         end
       end
+      # normalize_queue_item_positions
+      current_user.queue_items.each_with_index do |queue_item, index|
+        queue_item.update_attributes(position: index+1)
+      end
     rescue ActiveRecord::RecordInvalid
-      flash[:danger] = 'Please check the position number you put in'
+      flash[:danger] = 'Invalid position numbers.'
     end
-
-    reorder_queue_items
     redirect_to my_queue_path
   end
 
