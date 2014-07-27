@@ -23,12 +23,19 @@ class QueueItemsController < ApplicationController
   end
 
   def update
-    queue_items = current_user.queue_items
-    # binding.pry
-    queue_items.each_with_index do |queue_item, index|
-      queue_item.position = params[:queue_items]['position'][index]
-      queue_item.save
+    begin
+      ActiveRecord::Base.transaction do
+        queue_items = current_user.queue_items
+        queue_items.each_with_index do |queue_item, index|
+          queue_item.position = params[:queue_items]['position'][index]
+          queue_item.save!
+        end
+      end
+    rescue ActiveRecord::RecordInvalid
+      flash[:danger] = 'Please check the position number you put in'
     end
+
+    reorder_queue_items
     redirect_to my_queue_path
   end
 
