@@ -103,8 +103,9 @@ describe QueueItemsController do
 
   describe 'POST update_queue' do
     let(:alice) { Fabricate(:user) }
-    let(:queue_item1) { Fabricate(:queue_item, user: alice, position: 1) }
-    let(:queue_item2) { Fabricate(:queue_item, user: alice, position: 2) }
+    let(:video) { Fabricate(:video) }
+    let(:queue_item1) { Fabricate(:queue_item, user: alice, position: 1, video: video) }
+    let(:queue_item2) { Fabricate(:queue_item, user: alice, position: 2, video: video) }
     context 'with valid input' do
       before do
         session[:user_id] = alice.id
@@ -123,12 +124,27 @@ describe QueueItemsController do
         expect(queue_item1.reload.position).to eq(2)
         expect(queue_item2.reload.position).to eq(1)
       end
+      
+      it 'updates video user review rating if it already exists' do
+        video = Fabricate(:video)
+        review = Fabricate(:review, user: alice, video: video, rating: 3)
+        queue_item = Fabricate(:queue_item, user: alice, video: video, position: 1)
+        post :update_queue, queue_items: [{id: queue_item.id, position: 1, rating: 4}]
+        expect(review.reload.rating).to eq(4)
+      end
+      it 'adds new review rating if video user view does not exists' do
+        video = Fabricate(:video)
+        queue_item = Fabricate(:queue_item, user: alice, video: video, position: 1)
+        post :update_queue, queue_items: [{id: queue_item.id, position: 1, rating: 4}]
+        expect(Review.first.rating).to eq(4)
+      end
     end
 
     context 'with invalid inputs' do
       let(:alice) { Fabricate(:user) }
-      let(:queue_item1) { Fabricate(:queue_item, user: alice, position: 1) }
-      let(:queue_item2) { Fabricate(:queue_item, user: alice, position: 2) }
+      let(:video) { Fabricate(:video) }
+      let(:queue_item1) { Fabricate(:queue_item, user: alice, position: 1, video: video) }
+      let(:queue_item2) { Fabricate(:queue_item, user: alice, position: 2, video: video) }
       before do
         session[:user_id] = alice.id
       end
@@ -147,20 +163,24 @@ describe QueueItemsController do
     end
 
     context 'with unauthenticated users' do
+      let(:video1) { Fabricate(:video) }
+      let(:video2) { Fabricate(:video) }
       it 'redirects to sign in path' do
-        queue_item1 = Fabricate(:queue_item, position: 1)
-        queue_item2 = Fabricate(:queue_item, position: 2)
+        queue_item1 = Fabricate(:queue_item, position: 1, video: video1)
+        queue_item2 = Fabricate(:queue_item, position: 2, video: video2)
         post :update_queue, queue_items: [{id: queue_item1.id, position: 2}, {id: queue_item2.id, position: 1}]
         expect(response).to redirect_to sign_in_path 
       end
     end
     context 'with queue items that do not belongs to the current user' do
+      let(:video1) { Fabricate(:video) }
+      let(:video2) { Fabricate(:video) }
       it 'does not change the queue items' do
         alice = Fabricate(:user)
         bob = Fabricate(:user)
         session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice, position: 1) 
-        queue_item2 = Fabricate(:queue_item, user: bob, position: 1)
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1, video: video1) 
+        queue_item2 = Fabricate(:queue_item, user: bob, position: 1, video: video2)
         post :update_queue, queue_items: [{id: queue_item2.id, position: 2}]
         expect(queue_item2.reload.position).to eq(1)
       end
