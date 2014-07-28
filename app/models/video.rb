@@ -15,17 +15,4 @@ class Video < ActiveRecord::Base
     self.reviews.average(:rating)
   end
 
-  def update_rating new_rating, user
-    unless self.reviews.empty?
-      reviews = self.reviews.where(user: user) 
-      reviews.each do |review|
-        review.rating = new_rating
-        review.save(validate: false)
-      end
-    else
-      review = self.reviews.new(rating: new_rating, user_id: user.id)
-      review.save(validate: false) 
-    end
-  end
-
 end
