@@ -44,16 +44,8 @@ class QueueItemsController < ApplicationController
         queue_item = QueueItem.find(queue_item_data['id'])
 
         video = queue_item.video
-        if video.reviews.count > 0
-          reviews = queue_item.video.reviews.where(user: current_user) 
-          reviews.each do |review|
-            review.rating = queue_item_data['rating']
-            review.save(validate: false)
-          end
-        else
-          review = video.reviews.new(rating: queue_item_data['rating'], user_id: current_user.id)
-          review.save(validate: false) 
-        end
+
+        video.update_rating queue_item_data['rating'], current_user
 
         queue_item.update_attributes!(position: queue_item_data['position']) if queue_item.user == current_user
       end
