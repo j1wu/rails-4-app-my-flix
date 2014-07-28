@@ -7,8 +7,7 @@ describe VideosController do
 
     context 'authenticated' do
       before do
-        user = Fabricate(:user)
-        session[:user_id] = user.id
+        set_current_user
       end
       it 'sets @video variable' do 
         get :show, id: fight_club.id
@@ -46,9 +45,8 @@ describe VideosController do
         get :show, id: fight_club.id
         expect(assigns(:video)).to eq(nil)
       end
-      it 'redirect user to sign in page' do 
-        get :show, id: fight_club.id
-        expect(response).to redirect_to sign_in_path
+      it_behaves_like 'require_sign_in' do
+        let(:action) { get :show, id: Fabricate(:video).id }
       end
     end
 
@@ -59,8 +57,7 @@ describe VideosController do
 
     context 'authenticated' do
       before do
-        user = Fabricate(:user)
-        session[:user_id] = user.id
+        set_current_user
       end
       it 'sets @results variable' do
         post :search, search_term: 'South Park'
@@ -77,9 +74,8 @@ describe VideosController do
         post :search, search_term: 'South Park'
         expect(assigns(:results)).to eq(nil)
       end
-      it 'redirect user to sign in page' do
-        post :search, search_term: 'South Park'
-        expect(response).to redirect_to sign_in_path
+      it_behaves_like 'require_sign_in' do
+        let(:action) { post :search, search_term: 'south park' }
       end
     end
   end
