@@ -17,4 +17,8 @@ class User < ActiveRecord::Base
     self.queue_items.map(&:video).include? video 
   end
 
+  def reviews_with_content
+    self.reviews.reject { |review| review.content.nil? }
+  end
+
 end

@@ -28,4 +28,26 @@ describe UsersController do
     end
   end
 
+  describe 'GET show' do
+    context 'with authenticated user' do
+      before do
+        set_current_user
+      end
+      it 'renders user/show template' do
+        get :show, id: current_user.id
+        expect(response).to render_template :show
+      end
+      it 'sets @user instance variable' do
+        get :show, id: current_user.id
+        expect(assigns(:user)).to eq(current_user)
+      end
+    end
+    context 'with unauthenticated user' do
+      it 'redirects user to sign in page' do
+        get :show, id: Fabricate(:user).id
+        expect(response).to redirect_to sign_in_path
+      end
+    end
+  end
+
 end
