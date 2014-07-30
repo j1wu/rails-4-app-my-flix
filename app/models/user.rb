@@ -12,4 +12,9 @@ class User < ActiveRecord::Base
       queue_item.update_attributes(position: index+1)
     end
   end
+  
+  def video_exists_in_queue? video 
+    self.queue_items.map(&:video).include? video 
+  end
+
 end
