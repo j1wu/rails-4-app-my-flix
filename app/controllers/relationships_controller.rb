@@ -11,4 +11,15 @@ class RelationshipsController < ApplicationController
     redirect_to people_path
   end
 
+  def create
+    leader = User.find(params[:user_id])
+    relationship = Relationship.new(follower: current_user, leader: leader)
+    unless relationship.duplicated?
+      relationship.save
+      flash[:info] = "You are now following #{leader.full_name}"
+    else
+    end
+    redirect_to people_path
+  end
+
 end
