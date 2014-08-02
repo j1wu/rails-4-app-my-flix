@@ -19,4 +19,13 @@ describe User do
     end
   end
 
+  describe '#followed?' do
+    it 'returns true if already followed this user' do
+      bob = Fabricate(:user)
+      john = Fabricate(:user)
+      relationship = Fabricate(:relationship, leader: bob, follower: john)
+      expect(john.followed? bob).to be_truthy
+    end
+  end
+
 end

@@ -12,7 +12,7 @@ class Video < ActiveRecord::Base
 
   def average_rating
     return 'Not Yet Rated' if self.reviews.empty?
-    self.reviews.average(:rating)
+    self.reviews.average(:rating).round(1)
   end
 
 end

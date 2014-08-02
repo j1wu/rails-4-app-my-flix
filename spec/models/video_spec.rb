@@ -66,11 +66,19 @@ describe 'average rating' do
   end
 
   context 'has rating' do
-    it 'sets average rating as rounded float' do
+    it 'sets average rating' do
       review1 = Fabricate(:review, video: fight_club, rating: 2)
       review2 = Fabricate(:review, video: fight_club, rating: 3)
       rating = fight_club.average_rating
       expect(rating).to eq(2.5)
+    end
+
+    it 'sets average rating as rounded float' do
+      review1 = Fabricate(:review, video: fight_club, rating: 2)
+      review2 = Fabricate(:review, video: fight_club, rating: 3)
+      review3 = Fabricate(:review, video: fight_club, rating: 2)
+      rating = fight_club.average_rating
+      expect(rating).to eq(2.3)
     end
   end
 

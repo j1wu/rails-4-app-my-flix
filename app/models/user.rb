@@ -24,4 +24,8 @@ class User < ActiveRecord::Base
     self.reviews.reject { |review| review.content.nil? }
   end
 
+  def followed? user
+    self.following_relationships.map(&:leader_id).include? user.id
+  end
+
 end
