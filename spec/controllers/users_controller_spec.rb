@@ -30,6 +30,16 @@ describe UsersController do
       end
     end
 
+    context 'email sending with invalid input' do
+      before do
+        ActionMailer::Base.deliveries.clear 
+      end
+      it 'does not send out email with invalid input' do
+        post :create, user: {email: 'john@example.com', password: '123', full_name: ''}
+        expect(ActionMailer::Base.deliveries).to be_empty 
+      end
+    end
+
     context 'invalid input' do
       before do
         post :create, user: {email: 'john@example.com', password: '', full_name: 'john smith'}
