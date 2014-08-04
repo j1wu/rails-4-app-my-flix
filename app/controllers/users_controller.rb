@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(post_params)
     if @user.save
+      AppMailer.welcome_to_myflix(@user).deliver
       redirect_to sign_in_path 
     else
       render :new
