@@ -15,6 +15,21 @@ describe UsersController do
       end
     end
 
+    context 'email sending' do
+      before do
+        post :create, user: {email: 'john@example.com', password: '123', full_name: 'john smith'}
+      end
+      it 'sends out email' do
+        expect(ActionMailer::Base.deliveries).not_to be_empty 
+      end
+      it 'sends out the email to the right person' do
+        expect(ActionMailer::Base.deliveries.last.to).to eq(['john@example.com'])
+      end
+      it 'sends out the email with right content' do
+        expect(ActionMailer::Base.deliveries.last.subject).to eq('Welcome to MyFliX!')
+      end
+    end
+
     context 'invalid input' do
       before do
         post :create, user: {email: 'john@example.com', password: '', full_name: 'john smith'}
