@@ -33,6 +33,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'pry'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
 end
 
