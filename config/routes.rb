@@ -16,6 +16,7 @@ Myflix::Application.routes.draw do
   get 'home', to: 'videos#index'
   
   get 'register', to: 'users#new'
+  get 'register/:id', to: 'users#new', as: 'join', constraints: { :id => /.*/ }
 
   resources :forgot_passwords, only: [:create]
   get 'forgot_password', to: 'forgot_passwords#new'
@@ -23,6 +24,9 @@ Myflix::Application.routes.draw do
 
   resources :reset_passwords, only: [:show, :create]
   get 'expired_token', to: 'reset_passwords#expired_token'
+
+  resources :invitations, only: [:create]
+  get 'invitation', to: 'invitations#new'
 
   get 'sign_in', to: 'sessions#new'
   get 'sign_out', to: 'sessions#destroy'
