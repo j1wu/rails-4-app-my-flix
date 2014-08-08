@@ -5,13 +5,38 @@ describe UsersController do
   describe 'POST create' do
     context 'valid input' do
       before do
-        post :create, user: {email: 'john@example.com', password: '123', full_name: 'john smith'}
+        post :create, user: Fabricate.attributes_for(:user)
       end
       it 'creates user record' do
-        expect(User.first.email).to eq('john@example.com')
+        expect(User.count).to eq(1)
       end
       it 'redirects user to sign in path' do
         expect(response).to redirect_to sign_in_path
+      end
+    end
+
+    context 'email sending' do
+      before do
+        post :create, user: {email: 'john@example.com', password: '123', full_name: 'john smith'}
+      end
+      it 'sends out email' do
+        expect(ActionMailer::Base.deliveries).not_to be_empty 
+      end
+      it 'sends out the email to the right person' do
+        expect(ActionMailer::Base.deliveries.last.to).to eq(['john@example.com'])
+      end
+      it 'sends out the email with right content' do
+        expect(ActionMailer::Base.deliveries.last.subject).to eq('Welcome to MyFliX!')
+      end
+    end
+
+    context 'email sending with invalid input' do
+      before do
+        ActionMailer::Base.deliveries.clear 
+      end
+      it 'does not send out email with invalid input' do
+        post :create, user: {email: 'john@example.com', password: '123', full_name: ''}
+        expect(ActionMailer::Base.deliveries).to be_empty 
       end
     end
 
