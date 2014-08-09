@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         Relationship.create(follower_id: params['user']['inviter_id'], leader_id: @user.id)
       else
       end
-      AppMailer.welcome_to_myflix(@user).deliver
+      AppMailer.delay.welcome_to_myflix(@user)
       redirect_to sign_in_path 
     else
       render :new
