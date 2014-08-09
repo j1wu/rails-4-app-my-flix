@@ -8,6 +8,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(post_params)
     if @user.save
+      if (params['user']['inviter_id'])
+        Relationship.create(follower_id: @user.id, leader_id: params['user']['inviter_id'])
+        Relationship.create(follower_id: params['user']['inviter_id'], leader_id: @user.id)
+      else
+      end
       AppMailer.welcome_to_myflix(@user).deliver
       redirect_to sign_in_path 
     else

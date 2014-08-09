@@ -10,7 +10,7 @@ class InvitationsController < ApplicationController
       user.full_name = params['full_name']
       user.email = params['email']
       message = params['message']
-      AppMailer.invite(user, message).deliver
+      AppMailer.invite(current_user, user, message).deliver
       flash[:success] = 'Invitation sent!'
       redirect_to invitation_path
     end

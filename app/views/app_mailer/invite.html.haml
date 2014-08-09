@@ -2,4 +2,4 @@
   %body
     %p #{@user.full_name}, you're invited to join MyFlix!
     %p #{@message}
-    %p= link_to "join the party!", join_url(@user.email)
+    %p= link_to "join the party!", join_url(@user.email, @current_user.id)

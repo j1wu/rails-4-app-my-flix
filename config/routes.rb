@@ -16,7 +16,7 @@ Myflix::Application.routes.draw do
   get 'home', to: 'videos#index'
   
   get 'register', to: 'users#new'
-  get 'register/:id', to: 'users#new', as: 'join', constraints: { :id => /.*/ }
+  get 'register/:id/:user_id', to: 'users#new', as: 'join', constraints: { :id => /.*/ }
 
   resources :forgot_passwords, only: [:create]
   get 'forgot_password', to: 'forgot_passwords#new'

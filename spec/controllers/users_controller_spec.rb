@@ -13,6 +13,9 @@ describe UsersController do
       it 'redirects user to sign in path' do
         expect(response).to redirect_to sign_in_path
       end
+      it 'does not creates relationship' do
+        expect(Relationship.count).to eq(0)
+      end
     end
 
     context 'email sending' do
@@ -50,6 +53,25 @@ describe UsersController do
       it 'renders new template' do
         expect(response).to render_template :new
       end
+    end
+  end
+
+  describe 'POST create/:id/:user_id' do
+    let(:doe) { Fabricate(:user) }
+    before do
+      post :create, user: { email: 'joe@example.com', inviter_id: doe.id, password: '123', full_name: 'Joe Doe' }
+    end
+    it 'redirects to sign in page' do
+      expect(response).to redirect_to sign_in_path
+    end
+    it 'creates user record' do
+      expect(User.last.email).to eq('joe@example.com')
+    end
+    it 'follows the inviter' do
+      expect(User.last.following_relationships.map(&:leader_id)).to include(doe.id)
+    end
+    it 'is followed by inviter' do
+      expect(User.first.following_relationships.map(&:leader_id)).to include(2)
     end
   end
 
