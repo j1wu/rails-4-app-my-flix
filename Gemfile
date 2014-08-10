@@ -8,6 +8,7 @@ gem 'haml-rails'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
+gem 'paratrooper'
 
 gem 'bootstrap_form'
 gem 'bcrypt-ruby'
