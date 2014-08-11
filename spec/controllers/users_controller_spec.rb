@@ -13,6 +13,25 @@ describe UsersController do
       it 'redirects user to sign in path' do
         expect(response).to redirect_to sign_in_path
       end
+      it 'does not creates relationship' do
+        expect(Relationship.count).to eq(0)
+      end
+    end
+
+    context 'with invitation' do
+      let(:user) { Fabricate(:user) }
+      before do
+        post :create, user: Fabricate.attributes_for(:user), inviter_id: user.id
+      end
+      it 'creates user record' do
+        expect(User.count).to eq(2)
+      end 
+      it 'follows inviter automatically' do
+        expect(User.last.following_relationships.pluck(:leader_id)).to include(user.id)
+      end
+      it 'being followed by inviter' do
+        expect(User.last.leading_relationships.pluck(:follower_id)).to include(user.id)
+      end
     end
 
     context 'email sending' do
@@ -49,6 +68,27 @@ describe UsersController do
       end
       it 'renders new template' do
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'GET register_with_invitation' do
+    context 'with valid token' do
+      before do
+        invitation = Fabricate(:invitation, inviter_id: 1, token: 'abc')
+        get :register_with_invitation, token: invitation.token
+      end
+      it 'sets @user' do
+        expect(assigns(:user)).not_to be_nil
+      end
+      it 'sets @invitation' do
+        expect(assigns(:invitation)).not_to be_nil 
+      end
+    end
+    context 'with invalid token' do
+      it 'redirects user to expired token page' do
+        get :register_with_invitation, token: 'efg'
+        expect(response).to redirect_to expired_token_path 
       end
     end
   end

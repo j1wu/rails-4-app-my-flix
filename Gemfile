@@ -8,9 +8,13 @@ gem 'haml-rails'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
+gem 'paratrooper'
 
 gem 'bootstrap_form'
 gem 'bcrypt-ruby'
+gem 'sidekiq'
+gem 'unicorn'
+gem 'sentry-raven'
 
 group :development do
   gem 'sqlite3'
@@ -33,6 +37,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'pry'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
 end
 

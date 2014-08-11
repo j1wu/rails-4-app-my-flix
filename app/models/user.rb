@@ -28,4 +28,8 @@ class User < ActiveRecord::Base
     self.following_relationships.map(&:leader_id).include? user.id
   end
 
+  def follow user
+    Relationship.create(leader: user, follower: self) 
+  end
+
 end

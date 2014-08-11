@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140806150023) do
+ActiveRecord::Schema.define(version: 20140810154322) do
 
   create_table "categories", force: true do |t|
     t.string "name"
+  end
+
+  create_table "invitations", force: true do |t|
+    t.integer  "inviter_id"
+    t.string   "invitee_name"
+    t.string   "invitee_email"
+    t.string   "message"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "queue_items", force: true do |t|
