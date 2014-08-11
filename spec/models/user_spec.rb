@@ -28,4 +28,13 @@ describe User do
     end
   end
 
+  describe '#follow(user)' do
+    it 'follows a user' do
+      bob = Fabricate(:user)
+      john = Fabricate(:user)
+      bob.follow(john)
+      expect(bob.following_relationships.pluck(:leader_id)).to include(john.id)
+    end
+  end
+
 end

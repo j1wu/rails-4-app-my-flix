@@ -7,16 +7,26 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(post_params)
+    inviter = User.find(params['inviter_id']) if params['inviter_id'].present?
     if @user.save
-      if (params['user']['inviter_id'])
-        Relationship.create(follower_id: @user.id, leader_id: params['user']['inviter_id'])
-        Relationship.create(follower_id: params['user']['inviter_id'], leader_id: @user.id)
-      else
-      end
       AppMailer.delay.welcome_to_myflix(@user)
+      if inviter
+        @user.follow(inviter)
+        inviter.follow(@user)
+      end
       redirect_to sign_in_path 
     else
       render :new
+    end
+  end
+
+  def register_with_invitation
+    @invitation = Invitation.find_by_token(params[:token])
+    if @invitation
+      @user = User.new(email: @invitation.invitee_email)
+      render :new
+    else
+      redirect_to expired_token_path
     end
   end
 

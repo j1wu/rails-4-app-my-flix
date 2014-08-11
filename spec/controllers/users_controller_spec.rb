@@ -18,6 +18,22 @@ describe UsersController do
       end
     end
 
+    context 'with invitation' do
+      let(:user) { Fabricate(:user) }
+      before do
+        post :create, user: Fabricate.attributes_for(:user), inviter_id: user.id
+      end
+      it 'creates user record' do
+        expect(User.count).to eq(2)
+      end 
+      it 'follows inviter automatically' do
+        expect(User.last.following_relationships.pluck(:leader_id)).to include(user.id)
+      end
+      it 'being followed by inviter' do
+        expect(User.last.leading_relationships.pluck(:follower_id)).to include(user.id)
+      end
+    end
+
     context 'email sending' do
       before do
         post :create, user: {email: 'john@example.com', password: '123', full_name: 'john smith'}
@@ -56,22 +72,24 @@ describe UsersController do
     end
   end
 
-  describe 'POST create/:id/:user_id' do
-    let(:doe) { Fabricate(:user) }
-    before do
-      post :create, user: { email: 'joe@example.com', inviter_id: doe.id, password: '123', full_name: 'Joe Doe' }
+  describe 'GET register_with_invitation' do
+    context 'with valid token' do
+      before do
+        invitation = Fabricate(:invitation, inviter_id: 1, token: 'abc')
+        get :register_with_invitation, token: invitation.token
+      end
+      it 'sets @user' do
+        expect(assigns(:user)).not_to be_nil
+      end
+      it 'sets @invitation' do
+        expect(assigns(:invitation)).not_to be_nil 
+      end
     end
-    it 'redirects to sign in page' do
-      expect(response).to redirect_to sign_in_path
-    end
-    it 'creates user record' do
-      expect(User.last.email).to eq('joe@example.com')
-    end
-    it 'follows the inviter' do
-      expect(User.last.following_relationships.map(&:leader_id)).to include(doe.id)
-    end
-    it 'is followed by inviter' do
-      expect(User.first.following_relationships.map(&:leader_id)).to include(2)
+    context 'with invalid token' do
+      it 'redirects user to expired token page' do
+        get :register_with_invitation, token: 'efg'
+        expect(response).to redirect_to expired_token_path 
+      end
     end
   end
 

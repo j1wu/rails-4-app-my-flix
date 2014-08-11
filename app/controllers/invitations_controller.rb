@@ -1,19 +1,26 @@
 class InvitationsController < ApplicationController
   before_action :require_user
 
+  def new
+    @invitation = Invitation.new
+  end
+
   def create
-    if params['full_name'].blank? or params['email'].blank?
-      flash[:danger] = 'Missing name or email'
-      redirect_to invitation_path
+    @invitation = Invitation.new(post_params)
+    @invitation.inviter_id = current_user.id
+    if @invitation.save
+      AppMailer.invite(@invitation).deliver
+      flash[:success] = "Invitation sent"
+      redirect_to invitation_path 
     else
-      user = User.new
-      user.full_name = params['full_name']
-      user.email = params['email']
-      message = params['message']
-      AppMailer.invite(current_user, user, message).deliver
-      flash[:success] = 'Invitation sent!'
+      flash[:danger] = "Information missing"
       redirect_to invitation_path
     end
+  end
+
+  private
+  def post_params
+    params.require(:invitation).permit(:inviter_id, :invitee_name, :invitee_email, :message) 
   end
 
 end

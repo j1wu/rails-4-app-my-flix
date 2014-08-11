@@ -5,8 +5,8 @@
         %header
           %h1 Register
         %fieldset
-          = f.email_field :email, label: "Email Address", value: params[:id]
-          = f.hidden_field :inviter_id, value: params[:user_id]
+          = f.email_field :email, label: "Email Address", value: @user.email
+          = hidden_field_tag :inviter_id, @invitation.inviter_id if @invitation
           = f.password_field :password
           = f.text_field :full_name, label: "Full Name"
         %fieldset.actions.control-group.col-sm-offset-2

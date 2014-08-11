@@ -9,7 +9,7 @@ feature 'user invites user' do
     # sends out invitation
     sign_in bob
     visit invitation_path
-    fill_in 'full_name', with: 'New Friend'
+    fill_in 'Invitee name', with: 'New Friend'
     fill_in 'email', with: 'friend@example.com'
     find_button('Send Invitation').click
 

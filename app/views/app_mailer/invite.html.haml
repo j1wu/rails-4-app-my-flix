@@ -1,5 +1,5 @@
 %html(lang="utf-8")
   %body
-    %p #{@user.full_name}, you're invited to join MyFlix!
-    %p #{@message}
-    %p= link_to "join the party!", join_url(@user.email, @current_user.id)
+    %p #{@invitation.invitee_name}, you're invited to join MyFlix!
+    %p #{@invitation.message}
+    %p= link_to "join the party!", register_with_invitation_url(@invitation.token)
