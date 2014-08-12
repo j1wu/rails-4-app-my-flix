@@ -37,4 +37,12 @@ describe User do
     end
   end
 
+  describe '#admin?' do
+    it 'returns true if user has admin role' do
+      bob = Fabricate(:user)
+      bob.admin = true
+      expect(bob.admin?).to be_truthy
+    end
+  end
+
 end

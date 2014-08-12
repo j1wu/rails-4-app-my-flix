@@ -12,6 +12,11 @@ Myflix::Application.routes.draw do
   resources :queue_items, only: [:create, :destroy]
   resources :relationships, only: [:destroy, :create]
 
+  namespace :admin do
+    resources :videos, only: [:new]
+    get 'add_video', to: 'videos#new'
+  end
+
   root to: "pages#front"
   get 'home', to: 'videos#index'
   

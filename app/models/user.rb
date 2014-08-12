@@ -32,4 +32,8 @@ class User < ActiveRecord::Base
     Relationship.create(leader: user, follower: self) 
   end
 
+  def admin?
+    self.admin
+  end
+
 end

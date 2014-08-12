@@ -9,5 +9,12 @@ class ApplicationController < ActionController::Base
     redirect_to sign_in_path unless current_user
   end
 
+  def require_admin
+    unless current_user.admin?
+      redirect_to home_path 
+      flash[:danger] = "Access Denied"
+    end
+  end
+
   helper_method :current_user
 end
