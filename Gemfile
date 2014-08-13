@@ -10,6 +10,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'paratrooper'
 gem 'mini_magick'
+gem 'fog'
 
 gem 'bootstrap_form'
 gem 'bcrypt-ruby'
