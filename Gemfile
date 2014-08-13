@@ -9,12 +9,14 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'paratrooper'
+gem 'mini_magick'
 
 gem 'bootstrap_form'
 gem 'bcrypt-ruby'
 gem 'sidekiq'
 gem 'unicorn'
 gem 'sentry-raven'
+gem 'carrierwave'
 
 group :development do
   gem 'sqlite3'
