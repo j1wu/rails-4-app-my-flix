@@ -6,6 +6,7 @@ class Admin::VideosController < ApplicationController
   end
 
   def create
+    binding.pry
     @video = Video.new(post_params)
     if @video.save
       flash[:success] = 'Video added'
@@ -17,7 +18,7 @@ class Admin::VideosController < ApplicationController
 
   private
   def post_params
-    params.require(:video).permit(:title, :description, :category_id, :small_cover, :large_cover)
+    params.require(:video).permit(:title, :description, :category_id, :small_cover, :large_cover, :video_url)
   end
 
 end
