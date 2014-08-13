@@ -6,7 +6,6 @@ class Admin::VideosController < ApplicationController
   end
 
   def create
-    binding.pry
     @video = Video.new(post_params)
     if @video.save
       flash[:success] = 'Video added'
