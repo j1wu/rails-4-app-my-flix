@@ -11,6 +11,8 @@ gem 'jquery-rails'
 gem 'paratrooper'
 gem 'mini_magick'
 gem 'fog'
+gem 'stripe'
+gem 'figaro'
 
 gem 'bootstrap_form'
 gem 'bcrypt-ruby'
