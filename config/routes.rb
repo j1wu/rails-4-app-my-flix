@@ -13,8 +13,8 @@ Myflix::Application.routes.draw do
   resources :relationships, only: [:destroy, :create]
 
   namespace :admin do
-    resources :videos, only: [:new, :create]
-    get 'add_video', to: 'videos#new'
+    resources :videos, only: [:create]
+    get 'add_video', to: 'videos#new', as: 'add_video'
   end
 
   root to: "pages#front"

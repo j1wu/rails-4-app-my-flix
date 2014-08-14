@@ -11,6 +11,7 @@ class Admin::VideosController < ApplicationController
       flash[:success] = 'Video added'
       redirect_to admin_add_video_path
     else
+      flash[:danger] = 'Invalid input'
       render :new
     end
   end

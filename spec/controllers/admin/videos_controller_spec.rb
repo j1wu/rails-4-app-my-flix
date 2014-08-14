@@ -12,13 +12,12 @@ describe Admin::VideosController do
     it 'sets flash message for regular user' do
       set_current_user
       get :new
-      expect(flash[:danger]).not_to be_nil
+      expect(flash[:danger]).to be_present
     end
     it 'could access by admin user' do
       set_current_admin_user
       get :new
       expect(response).to render_template :new
-      expect(flash[:danger]).to be_nil
     end
     it 'sets @video' do
       set_current_admin_user
@@ -44,7 +43,7 @@ describe Admin::VideosController do
         expect(response).to redirect_to admin_add_video_path
       end
       it 'sets flash message' do
-        expect(flash[:success]).not_to be_nil
+        expect(flash[:success]).to be_present
       end
       it 'creates video record' do
         expect(cat.videos.count).to eq(1)
