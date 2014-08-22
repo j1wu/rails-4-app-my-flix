@@ -6,7 +6,6 @@ module StripeWrapper
       @error_message = error_message
     end
 
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     def self.create(options={})
       begin
         response = Stripe::Charge.create(
