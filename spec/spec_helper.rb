@@ -7,6 +7,8 @@ require 'capybara/email/rspec'
 require 'sidekiq/testing/inline'
 require 'vcr'
 
+Capybara.server_port = 52662
+
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'
   c.hook_into :webmock

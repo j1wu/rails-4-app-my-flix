@@ -8,18 +8,24 @@ class UsersController < ApplicationController
   def create
     @user = User.new(post_params)
     inviter = User.find(params['inviter_id']) if params['inviter_id'].present?
-    if @user.save
-      AppMailer.delay.welcome_to_myflix(@user)
-      StripeWrapper::Charge.create(
+    if @user.valid?
+      charge = StripeWrapper::Charge.create(
         :amount => 999,
         :card => params['stripeToken'],
         :description => "Sign up charge for #{@user.email}"
       )
-      if inviter
-        @user.follow(inviter)
-        inviter.follow(@user)
+      if charge.successful?
+        @user.save
+        if inviter
+          @user.follow(inviter)
+          inviter.follow(@user)
+        end
+        AppMailer.delay.welcome_to_myflix(@user)
+        redirect_to sign_in_path
+      else
+        flash[:danger] = charge.error_message
+        render :new
       end
-      redirect_to sign_in_path 
     else
       render :new
     end

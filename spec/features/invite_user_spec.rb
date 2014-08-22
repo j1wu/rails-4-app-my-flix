@@ -17,8 +17,7 @@ feature 'user invites user' do
     visit sign_out_path
     
     open_email "join@example.com"
-    current_email.find_link('join the party!').click
-    binding.pry
+    current_email.click_link('join the party!')
 
     # registers new user
     fill_in 'Full Name', with: 'New Friend'
@@ -31,7 +30,7 @@ feature 'user invites user' do
     expect(page).to have_content('Sign in')
 
     # sign in
-    fill_in 'Email Address', with: 'friend@example.com'
+    fill_in 'Email Address', with: 'join@example.com'
     fill_in 'Password', with: '456'
     click_button 'Sign in'
     expect(page).to have_content('You are signed in!')
