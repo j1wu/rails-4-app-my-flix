@@ -5,6 +5,7 @@ describe UsersController do
   describe 'POST create' do
     context 'valid input' do
       before do
+        StripeWrapper::Charge.stub(:create)
         post :create, user: Fabricate.attributes_for(:user)
       end
       it 'creates user record' do
@@ -18,9 +19,41 @@ describe UsersController do
       end
     end
 
+=begin
+    context 'with successful payment' do
+      before do
+        charge = double('charge')
+        charge.stub('amount').and_return(999)
+        StripeWrapper::Charge.stub(:create).and_return(charge)
+        post :create, user: Fabricate.attributes_for(:user) 
+      end
+      it 'creates user record', :vcr do
+        expect(User.count).to eq(1)
+      end
+      it 'redirects user to sign in path', :vcr do
+        expect(response).to redirect_to sign_in_path
+      end
+    end
+
+    context 'with unsuccessful payment' do
+      before do
+        charge = double('charge')
+        charge.stub('amount').and_return(0)
+        StripeWrapper::Charge.stub(:create).and_return(charge)
+        post :create, user: Fabricate.attributes_for(:user) 
+      end
+      it 'does not create user record', :vcr do
+        expect(User.count).to eq(0)
+      end
+      it 'redirects user to sign up path'
+      it 'set flash error message'
+    end
+=end
+
     context 'with invitation' do
       let(:user) { Fabricate(:user) }
       before do
+        StripeWrapper::Charge.stub(:create)
         post :create, user: Fabricate.attributes_for(:user), inviter_id: user.id
       end
       it 'creates user record' do
@@ -36,6 +69,7 @@ describe UsersController do
 
     context 'email sending' do
       before do
+        StripeWrapper::Charge.stub(:create)
         post :create, user: {email: 'john@example.com', password: '123', full_name: 'john smith'}
       end
       it 'sends out email' do
@@ -61,6 +95,7 @@ describe UsersController do
 
     context 'invalid input' do
       before do
+        StripeWrapper::Charge.stub(:create)
         post :create, user: {email: 'john@example.com', password: '', full_name: 'john smith'}
       end
       it 'does not create user record' do

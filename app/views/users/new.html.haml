@@ -19,13 +19,13 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
         %fieldset.credit_card
           %span.payment-errors
           .form-group
-            %label.control-label.col-sm-2 Credit Card Number
+            = label_tag :credit_card_number, "Credit Card Number", class: 'control-label col-sm-2'
             .col-sm-6
-              %input.form-control(type="text" data-stripe="number")
+              = text_field_tag :credit_card_number, "", name: nil, class: 'form-control', data: { stripe: 'number' }
           .form-group
-            %label.control-label.col-sm-2 Security Code
+            = label_tag :security_code, "Security Code", class: 'control-label col-sm-2'
             .col-sm-6
-              %input.form-control(type="text" data-stripe="cvc")
+              = text_field_tag :security_code, "", name: nil, class: 'form-control', data: { stripe: 'cvc' }
           .form-group
             %label.control-label.col-sm-2 Expiration
             .col-sm-3

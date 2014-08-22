@@ -2,28 +2,31 @@ require 'spec_helper'
 
 feature 'user invites user' do
 
-  scenario 'user invites user' do
+  scenario 'user invites user', js: true, vcr: true do
     # set up
     bob = Fabricate(:user)
 
     # sends out invitation
     sign_in bob
     visit invitation_path
-    fill_in 'Invitee name', with: 'New Friend'
-    fill_in 'email', with: 'friend@example.com'
+    fill_in "Friend's Name", with: 'New Friend'
+    fill_in "Friend's Email Address", with: "join@example.com"
     find_button('Send Invitation').click
 
     # sign out bob
     visit sign_out_path
     
-    open_email 'friend@example.com'
+    open_email "join@example.com"
     current_email.find_link('join the party!').click
-    
-    expect(find(:id, 'user_email').value).to eq('friend@example.com')
+    binding.pry
 
     # registers new user
-    fill_in 'Password', with: '456'
     fill_in 'Full Name', with: 'New Friend'
+    fill_in 'Password', with: '456'
+    fill_in 'Credit Card Number', with: '4242424242424242'
+    fill_in 'Security Code', with: '323'
+    select '7 - July', from: 'date_month'
+    select '2015', from: 'date_year'
     find_button('Sign Up').click
     expect(page).to have_content('Sign in')
 

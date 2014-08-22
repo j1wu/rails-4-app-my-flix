@@ -4,7 +4,6 @@ describe StripeWrapper do
   describe StripeWrapper::Charge do
     describe '.create' do
       it 'makes a successful transition', :vcr do
-        Stripe.api_key = ENV['STRIPE_SECRET_KEY']
         token = Stripe::Token.create(
           :card => {
           :number => '4242424242424242',

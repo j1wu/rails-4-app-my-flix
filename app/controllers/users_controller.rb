@@ -10,13 +10,11 @@ class UsersController < ApplicationController
     inviter = User.find(params['inviter_id']) if params['inviter_id'].present?
     if @user.save
       AppMailer.delay.welcome_to_myflix(@user)
-      if params['stripeToken']
-        StripeWrapper::Charge.create(
-          :amount => 999,
-          :card => params['stripeToken'],
-          :description => "Sign up charge for #{@user.email}"
-        )
-      end
+      StripeWrapper::Charge.create(
+        :amount => 999,
+        :card => params['stripeToken'],
+        :description => "Sign up charge for #{@user.email}"
+      )
       if inviter
         @user.follow(inviter)
         inviter.follow(@user)

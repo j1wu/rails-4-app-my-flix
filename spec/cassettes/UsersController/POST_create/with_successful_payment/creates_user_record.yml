@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/tokens
     body:
       encoding: US-ASCII
-      string: card[number]=4242424242424242&card[exp_month]=3&card[exp_year]=2019&card[cvc]=314
+      string: card[number]=4242424242424242&card[exp_month]=3&card[exp_year]=2018&card[cvc]=314
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 21 Aug 2014 08:09:23 GMT
+      - Thu, 21 Aug 2014 11:48:35 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -52,20 +52,20 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_14TqdLDFkVP2Pa3fxEVKrpe2",
+          "id": "tok_14Tu3TDFkVP2Pa3fIyM4Pd2V",
           "livemode": false,
-          "created": 1408608563,
+          "created": 1408621715,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_14TqdLDFkVP2Pa3fjvgtk03a",
+            "id": "card_14Tu3TDFkVP2Pa3fbN71k0CC",
             "object": "card",
             "last4": "4242",
             "brand": "Visa",
             "funding": "credit",
             "exp_month": 3,
-            "exp_year": 2019,
+            "exp_year": 2018,
             "fingerprint": "aKWDokh2p79RC0Pa",
             "country": "US",
             "name": null,
@@ -79,13 +79,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 21 Aug 2014 08:09:22 GMT
+  recorded_at: Thu, 21 Aug 2014 11:48:35 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&card=tok_14TqdLDFkVP2Pa3fxEVKrpe2&description=a%20valid%20charge
+      string: amount=999&currency=usd&card=tok_14Tu3TDFkVP2Pa3fIyM4Pd2V
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -102,7 +102,7 @@ http_interactions:
         Jwu.local 13.3.0 Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014;
         root:xnu-2422.110.17~1/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '88'
+      - '57'
   response:
     status:
       code: 200
@@ -111,11 +111,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 21 Aug 2014 08:09:25 GMT
+      - Thu, 21 Aug 2014 11:48:37 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '1210'
+      - '1198'
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Methods:
@@ -132,22 +132,22 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_14TqdNDFkVP2Pa3fLfYTDAg6",
+          "id": "ch_14Tu3VDFkVP2Pa3f8SiUBgU2",
           "object": "charge",
-          "created": 1408608565,
+          "created": 1408621717,
           "livemode": false,
           "paid": true,
           "amount": 999,
           "currency": "usd",
           "refunded": false,
           "card": {
-            "id": "card_14TqdLDFkVP2Pa3fjvgtk03a",
+            "id": "card_14Tu3TDFkVP2Pa3fbN71k0CC",
             "object": "card",
             "last4": "4242",
             "brand": "Visa",
             "funding": "credit",
             "exp_month": 3,
-            "exp_year": 2019,
+            "exp_year": 2018,
             "fingerprint": "aKWDokh2p79RC0Pa",
             "country": "US",
             "name": null,
@@ -167,21 +167,21 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/charges/ch_14TqdNDFkVP2Pa3fLfYTDAg6/refunds",
+            "url": "/v1/charges/ch_14Tu3VDFkVP2Pa3f8SiUBgU2/refunds",
             "data": []
           },
-          "balance_transaction": "txn_14TqdNDFkVP2Pa3fYTSUPyox",
+          "balance_transaction": "txn_14Tu3VDFkVP2Pa3fjWevPv7B",
           "failure_message": null,
           "failure_code": null,
           "amount_refunded": 0,
           "customer": null,
           "invoice": null,
-          "description": "a valid charge",
+          "description": null,
           "dispute": null,
           "metadata": {},
           "statement_description": null,
           "receipt_email": null
         }
     http_version: 
-  recorded_at: Thu, 21 Aug 2014 08:09:23 GMT
+  recorded_at: Thu, 21 Aug 2014 11:48:37 GMT
 recorded_with: VCR 2.9.2
