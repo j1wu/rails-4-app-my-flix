@@ -1,2 +1,15 @@
-I'm back!
-And I'm j1wu
+* [**Demo**](http://myflixforeveryone.herokuapp.com) netflix clone, demonstrating:
+
+- The complete from idea to launch process
+- Team collaboration and code reviews
+- Test Driven Development (TDD) with Rspec
+- Feature / integration test with capybara
+- Advanced rails skills
+  - Complex form
+  - ActiveRecord transaction and exception handling
+  - Background jobs
+  - Policy, domain and service objects
+- Service integration
+- E-commerce and billing management
+- Deployment pipeline setup
+- Production error monitoring
